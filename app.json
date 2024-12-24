@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Real-States-RN",
-    "slug": "Real-States-RN",
+    "name": "Real-State-RN",
+    "slug": "Real-State-RN",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "restate",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

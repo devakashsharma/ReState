@@ -19,6 +19,7 @@ client
 export const avatars = new Avatars(client);
 export const account = new Account(client);
 
+// Login Function 
 export async function login() {
     try {
         const redirectURL = Linking.createURL("/");
@@ -42,6 +43,17 @@ export async function login() {
 
         if (!session) throw new Error("Failed to login");
 
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+// Logout Function 
+export async function logout() {
+    try {
+        await account.deleteSession("current");
         return true;
     } catch (error) {
         console.error(error);

@@ -1,6 +1,6 @@
 import { Account, Avatars, Client, OAuthProvider } from "react-native-appwrite";
 import * as Linking from "expo-linking";
-import { startAsync as openAuthSessionAsync } from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 
 
 export const config = {
@@ -28,7 +28,7 @@ export async function login() {
 
         if (!response) throw new Error("Failed to login");
 
-        const browserResult = await openAuthSessionAsync(response.toString(), redirectURL);
+        const browserResult = await WebBrowser.openAuthSessionAsync(response.toString(), redirectURL);
 
         if (browserResult.type !== "success") throw new Error("Failed to login");
 
@@ -58,5 +58,26 @@ export async function logout() {
     } catch (error) {
         console.error(error);
         return false;
+    }
+}
+
+// Get User Function
+export async function getUser() {
+    try {
+        const response = await account.get();
+
+        if (response.$id) {
+            const userAvatar = avatars.getInitials(response.name);
+
+            return {
+                ...response,
+                avatar: userAvatar.toString(),
+            }
+        }
+
+        return response;
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }

@@ -1,7 +1,8 @@
 import { SplashScreen, Stack } from "expo-router";
-import "./globals.css"
+import "./globals.css";
 import React, { useEffect } from "react";
 import { useFonts } from "expo-font";
+import GlobalProvider from "@/lib/global-provider";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -14,7 +15,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if(fontsLoaded) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -22,6 +23,10 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return null;
   }
-  
-  return <Stack screenOptions={{ headerShown: false}} />;
+
+  return (
+    <GlobalProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </GlobalProvider>
+  );
 }

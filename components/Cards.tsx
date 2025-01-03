@@ -59,12 +59,10 @@ export const Card = ({ onPress }: Props) => {
         </Text>
       </View>
 
-        <Image source={images.newYork} className="w-full h-40 rounded-lg" />
+      <Image source={images.newYork} className="w-full h-40 rounded-lg" />
 
       <View className="flex flex-col mt-2">
-        <Text
-          className="text-base font-rubik-bold text-black-300"
-        >
+        <Text className="text-base font-rubik-bold text-black-300">
           Cozy Studio
         </Text>
         <Text className="text-xs font-rubik text-black-200">
@@ -72,8 +70,14 @@ export const Card = ({ onPress }: Props) => {
         </Text>
 
         <View className="flex flex-row items-center justify-between mt-2">
-          <Text className="text-base font-rubik-bold text-primary-300">$2500</Text>
-          <Image source={icons.heart} className="w-5 h-5 mr-2" tintColor="#191D31" />
+          <Text className="text-base font-rubik-bold text-primary-300">
+            $2500
+          </Text>
+          <Image
+            source={icons.heart}
+            className="w-5 h-5 mr-2"
+            tintColor="#191D31"
+          />
         </View>
       </View>
     </TouchableOpacity>

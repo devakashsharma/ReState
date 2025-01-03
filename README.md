@@ -5,3 +5,8 @@ I'll update later after finish this project.
 Tech Stack:
 - React Native
 - Nativewindcss
+
+run - 
+```
+npx expo start
+```

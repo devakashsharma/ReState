@@ -112,7 +112,7 @@ export async function getLatestProperties() {
   }
 }
 
-export async function name({
+export async function getProperties({
   filter,
   query,
   limit,

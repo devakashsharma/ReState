@@ -1,10 +1,12 @@
 import {
-  Account,
-  Avatars,
   Client,
+  Account,
+  ID,
   Databases,
   OAuthProvider,
+  Avatars,
   Query,
+  Storage,
 } from "react-native-appwrite";
 import * as Linking from "expo-linking";
 import { openAuthSessionAsync } from "expo-web-browser";
@@ -12,44 +14,42 @@ import { openAuthSessionAsync } from "expo-web-browser";
 export const config = {
   platform: "com.shinobi.restate",
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
-  projectID: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-  databaseID: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
-  galleriesCollectionID:
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  galleriesCollectionId:
     process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
-  reviewsCollectionID: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
-  agentsCollectionID: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
-  propertiesCollectionID:
+  reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
+  agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
+  propertiesCollectionId:
     process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID,
 };
 
 export const client = new Client();
-
 client
   .setEndpoint(config.endpoint!)
-  .setProject(config.projectID!)
+  .setProject(config.projectId!)
   .setPlatform(config.platform!);
 
 export const avatar = new Avatars(client);
 export const account = new Account(client);
 export const databases = new Databases(client);
 
-// Login Function
 export async function login() {
   try {
-    const redirectURL = Linking.createURL("/");
+    const redirectUri = Linking.createURL("/");
 
     const response = await account.createOAuth2Token(
       OAuthProvider.Google,
-      redirectURL
+      redirectUri
     );
-    if (!response) throw new Error("failed to login");
+    if (!response) throw new Error("Create OAuth2 token failed");
 
     const browserResult = await openAuthSessionAsync(
       response.toString(),
-      redirectURL
+      redirectUri
     );
-
-    if (browserResult.type !== "success") throw new Error("failed to login");
+    if (browserResult.type !== "success")
+      throw new Error("Create OAuth2 token failed");
 
     const url = new URL(browserResult.url);
     const secret = url.searchParams.get("secret")?.toString();
@@ -66,34 +66,31 @@ export async function login() {
   }
 }
 
-// Logout Function
 export async function logout() {
   try {
-    await account.deleteSession("current");
-    return true;
+    const result = await account.deleteSession("current");
+    return result;
   } catch (error) {
     console.error(error);
     return false;
   }
 }
 
-// Get User Function
 export async function getCurrentUser() {
   try {
-    const response = await account.get();
-
-    if (response.$id) {
-      const userAvatar = avatar.getInitials(response.name);
+    const result = await account.get();
+    if (result.$id) {
+      const userAvatar = avatar.getInitials(result.name);
 
       return {
-        ...response,
+        ...result,
         avatar: userAvatar.toString(),
       };
     }
 
     return null;
   } catch (error) {
-    console.error("Error fetching current user:", error);
+    console.log(error);
     return null;
   }
 }
@@ -101,10 +98,11 @@ export async function getCurrentUser() {
 export async function getLatestProperties() {
   try {
     const result = await databases.listDocuments(
-      config.databaseID!,
-      config.propertiesCollectionID!,
+      config.databaseId!,
+      config.propertiesCollectionId!,
       [Query.orderAsc("$createdAt"), Query.limit(5)]
     );
+
     return result.documents;
   } catch (error) {
     console.error(error);
@@ -123,31 +121,28 @@ export async function getProperties({
 }) {
   try {
     const buildQuery = [Query.orderDesc("$createdAt")];
-    if (filter && filter !== "All") {
-      buildQuery.push(Query.equal("type", filter));
-    }
 
-    if (query) {
+    if (filter && filter !== "All")
+      buildQuery.push(Query.equal("type", filter));
+
+    if (query)
       buildQuery.push(
         Query.or([
           Query.search("name", query),
           Query.search("address", query),
           Query.search("type", query),
         ])
-      )
-    }
+      );
 
-    if (limit) {
-      buildQuery.push(Query.limit(limit));
-    }
+    if (limit) buildQuery.push(Query.limit(limit));
 
     const result = await databases.listDocuments(
-      config.databaseID!,
-      config.propertiesCollectionID!,
-      buildQuery,
+      config.databaseId!,
+      config.propertiesCollectionId!,
+      buildQuery
     );
-    return result.documents;
 
+    return result.documents;
   } catch (error) {
     console.error(error);
     return [];

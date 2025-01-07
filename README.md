@@ -50,11 +50,11 @@ ReState is a full-stack real estate application built with React Native, featuri
 ```
 .
 ├── app
-│   ├── root
+│   └── root
 │       ├── tabs        # Apps Screens
 │       ├── properties  # Properties to display
 │       ├── global.css  # Apps Styling
-│       ├── sign-in.tsx # Apps Authentication
+│       └── sign-in.tsx # Apps Authentication
 ├── assets              # Static assets (images, fonts, icons)
 ├── components          # Reusable UI components
 ├── lib                 # Appwrite logic

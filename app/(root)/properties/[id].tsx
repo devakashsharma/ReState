@@ -17,6 +17,7 @@ const Property = () => {
       >
         <Image source={images.japan} className="size-full contain" />
       </View>
+
       <View className="absolute flex flex-row justify-between items-center p-4">
         <TouchableOpacity onPress={() => router.back()}>
           <Image source={icons.backArrow} className="size-7" />
@@ -73,6 +74,14 @@ const Property = () => {
             <Image source={icons.phone} className="size-8" />
           </View>
         </View>
+      </View>
+
+      <View className="w-full border-t border-primary-200 p-7 mt-5">
+        <Text className="text-xl font-rubik-bold">Overview</Text>
+        <Text className="text-black-200 text-lg font-rubik mt-3">
+          Sleek, modern 2-bedroom apartment with open living space, high-end
+          finishes, and city views. Minutes from downtown, dining, and transit.
+        </Text>
       </View>
     </ScrollView>
   );

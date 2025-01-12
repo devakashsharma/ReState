@@ -4,10 +4,22 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Dimensions } from "react-native";
 import icons from "@/constants/icons";
 import images from "@/constants/images";
-const windowHeight = Dimensions.get("window").height;
+import { facilities } from "@/constants/data";
+import { getPropertyById } from "@/lib/appwrite";
+import { useAppwrite } from "@/lib/useAppwrite";
+import { ID } from "react-native-appwrite";
 
 const Property = () => {
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id?: string }>();
+
+  const windowHeight = Dimensions.get("window").height;
+
+  const { data: property } = useAppwrite({
+    fn: getPropertyById,
+    params: {
+      id: id!,
+    },
+  });
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       {/* <Text>Property {id}</Text> */}
@@ -33,10 +45,10 @@ const Property = () => {
       </View>
 
       <View className="details flex flex-col py-5 px-7 gap-3 w-full my-3">
-        <Text className="font-rubik-bold text-2xl">Modernica Apartment</Text>
+        <Text className="font-rubik-bold text-2xl">{property?.name}</Text>
         <View className="flex flex-row justify-start items-center mb-2">
           <Text className="font-rubik-medium text-xs uppercase w-3/12 text-primary-300">
-            Apartment
+            {property?.type}
           </Text>
           <View className="flex flex-row items-center gap-2">
             <Image source={icons.star} />
@@ -83,6 +95,31 @@ const Property = () => {
           finishes, and city views. Minutes from downtown, dining, and transit.
         </Text>
       </View>
+
+      <View className="m-7">
+        <Text className="text-xl font-rubik-bold">Facilites</Text>
+        <View>
+          {property?.facilities.map((item: string, index: number) => {
+            const facilityData = facilities.find(
+              (facility) => facility.title == item
+            );
+
+            return (
+              <View key={index} className="mt-5">
+                <View className="size-14 bg-primary-100 rounded-full flex items-center justify-center">
+                  <Image
+                    source={facilityData ? facilityData.icon : icons.info}
+                    className="size-6"
+                  />
+                </View>
+                <Text>{facilityData?.title}</Text>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+
+      
     </ScrollView>
   );
 };

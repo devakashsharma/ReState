@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { Dimensions } from "react-native";
@@ -7,7 +14,6 @@ import images from "@/constants/images";
 import { facilities } from "@/constants/data";
 import { getPropertyById } from "@/lib/appwrite";
 import { useAppwrite } from "@/lib/useAppwrite";
-import { ID } from "react-native-appwrite";
 
 const Property = () => {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -23,6 +29,8 @@ const Property = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       {/* <Text>Property {id}</Text> */}
+
+      {/* Image */}
       <View
         className="relative w-full h-1/3"
         style={{ height: windowHeight / 2 }}
@@ -30,6 +38,7 @@ const Property = () => {
         <Image source={images.japan} className="size-full contain" />
       </View>
 
+      {/* backarrow */}
       <View className="absolute flex flex-row justify-between items-center p-4">
         <TouchableOpacity onPress={() => router.back()}>
           <Image source={icons.backArrow} className="size-7" />
@@ -44,6 +53,7 @@ const Property = () => {
         </View>
       </View>
 
+      {/* details */}
       <View className="details flex flex-col py-5 px-7 gap-3 w-full my-3">
         <Text className="font-rubik-bold text-2xl">{property?.name}</Text>
         <View className="flex flex-row justify-start items-center mb-2">
@@ -71,6 +81,7 @@ const Property = () => {
         </View>
       </View>
 
+      {/* Agent */}
       <View className="w-full border-t border-primary-200 p-7 mt-5">
         <Text className="text-xl font-rubik-bold">Agent</Text>
         <View className="flex flex-row items-center justify-between mt-3">
@@ -88,6 +99,7 @@ const Property = () => {
         </View>
       </View>
 
+      {/* Overview */}
       <View className="w-full border-t border-primary-200 p-7 mt-5">
         <Text className="text-xl font-rubik-bold">Overview</Text>
         <Text className="text-black-200 text-lg font-rubik mt-3">
@@ -96,6 +108,7 @@ const Property = () => {
         </Text>
       </View>
 
+      {/* Facilities */}
       <View className="m-7">
         <Text className="text-xl font-rubik-bold">Facilites</Text>
         <View>
@@ -119,36 +132,87 @@ const Property = () => {
         </View>
       </View>
 
+      {/* Gallery */}
       {property?.gallery.length > 0 && (
-            <View className="m-7">
-              <Text className="text-black-300 text-xl font-rubik-bold">
-                Gallery
-              </Text>
-              <FlatList
-                contentContainerStyle={{ paddingRight: 20 }}
-                data={property?.gallery}
-                keyExtractor={(item) => item.$id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <Image
-                    source={{ uri: item.image }}
-                    className="size-40 rounded-xl"
-                  />
-                )}
-                contentContainerClassName="flex gap-4 mt-3"
+        <View className="m-7">
+          <Text className="text-black-300 text-xl font-rubik-bold">
+            Gallery
+          </Text>
+          <FlatList
+            contentContainerStyle={{ paddingRight: 20 }}
+            data={property?.gallery}
+            keyExtractor={(item) => item.$id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Image
+                source={{ uri: item.image }}
+                className="size-40 rounded-xl"
               />
-            </View>
-          )}
+            )}
+            contentContainerClassName="flex gap-4 mt-3"
+          />
+        </View>
+      )}
 
+      {/* Location */}
       <View className="m-7">
         <Text className="text-xl font-rubik-bold">Location</Text>
         <View>
           <View className="text-black-300 text-lg font-rubik my-3 flex flex-row items-center gap-3">
             <Image source={icons.location} className="size-6" />
-            <Text className="font-rubik text-black-200">Grand City St. 100, New York, United States</Text>
+            <Text className="font-rubik text-black-200">
+              Grand City St. 100, New York, United States
+            </Text>
           </View>
-          <Image source={images.map} className="w-full h-[200px] object-cover rounded-xl" />
+          <Image
+            source={images.map}
+            className="w-full h-[200px] object-cover rounded-xl"
+          />
+        </View>
+      </View>
+
+      {/* Reviews */}
+      <View className="m-7 ">
+
+        {/* ratings */}
+        <View className="flex flex-row items-center justify-between">
+          <View className="flex flex-row items-center">
+            <Image source={icons.star} className="size-6" />
+            <Text className="text-xl font-rubik-bold ml-2">
+              4.5 (12 Reviews)
+            </Text>
+          </View>
+          <TouchableOpacity>
+            <Text className="font-rubik-bold text-primary-300">See All</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* reviewer name */}
+        <View className="flex flex-row items-center mt-5 gap-3">
+          <Image source={images.avatar} className="size-16" />
+          <Text className="text-xl font-rubik-bold">John Martin</Text>
+        </View>
+
+        {/* review */}
+        <View className="mt-3">
+          <Text className="font-rubik text-black-200">
+            The apartment is very clean and modern. I really like the interior
+            design. Looks like I'll feel at home 😍.
+          </Text>
+        </View>
+
+        {/* likes */}
+        <View className="flex flex-row items-center justify-between mt-5">
+          <View className="flex flex-row items-center gap-3">
+            <Image
+              source={icons.heart}
+              className="size-7"
+              tintColor={"#0061FF"}
+            />
+            <Text className="font-rubik-bold">432</Text>
+          </View>
+          <Text className="font-rubik text-black-200">6 days ago</Text>
         </View>
       </View>
     </ScrollView>

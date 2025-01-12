@@ -140,6 +140,17 @@ const Property = () => {
               />
             </View>
           )}
+
+      <View className="m-7">
+        <Text className="text-xl font-rubik-bold">Location</Text>
+        <View>
+          <View className="text-black-300 text-lg font-rubik my-3 flex flex-row items-center gap-3">
+            <Image source={icons.location} className="size-6" />
+            <Text className="font-rubik text-black-200">Grand City St. 100, New York, United States</Text>
+          </View>
+          <Image source={images.map} className="w-full h-[200px] object-cover rounded-xl" />
+        </View>
+      </View>
     </ScrollView>
   );
 };

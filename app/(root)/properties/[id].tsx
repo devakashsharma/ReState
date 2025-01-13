@@ -191,6 +191,23 @@ const Property = () => {
         {/* Comment */}
         <Comments />
       </View>
+
+      {/* Booking */}
+      <View className="mt-5 flex flex-row justify-between items-center p-7 rounded-3xl border border-primary-200">
+        <View className="flex flex-col gap-2">
+          <Text className="text-xs font-rubik text-black-200 uppercase">
+            Price
+          </Text>
+          <Text className="text-xl text-primary-300 font-rubik-bold">
+            $18000
+          </Text>
+        </View>
+        <TouchableOpacity>
+          <Text className="text-xl px-12 py-4 rounded-full font-rubik-bold text-white bg-primary-300">
+            Booking Now
+          </Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };

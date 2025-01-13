@@ -1,20 +1,22 @@
 import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
   FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  Platform,
 } from "react-native";
-import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { Dimensions } from "react-native";
+
 import icons from "@/constants/icons";
 import images from "@/constants/images";
+import Comment from "@/components/Comments";
 import { facilities } from "@/constants/data";
-import { getPropertyById } from "@/lib/appwrite";
+
 import { useAppwrite } from "@/lib/useAppwrite";
-import Comments from "@/components/Comments";
+import { getPropertyById } from "@/lib/appwrite";
 
 const Property = () => {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -27,188 +29,253 @@ const Property = () => {
       id: id!,
     },
   });
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {/* <Text>Property {id}</Text> */}
-
-      {/* Image */}
-      <View
-        className="relative w-full h-1/3"
-        style={{ height: windowHeight / 2 }}
+    <View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-32 bg-white"
       >
-        <Image source={images.japan} className="size-full contain" />
-      </View>
-
-      {/* backarrow */}
-      <View className="absolute flex flex-row justify-between items-center p-4">
-        <TouchableOpacity onPress={() => router.back()}>
-          <Image source={icons.backArrow} className="size-7" />
-        </TouchableOpacity>
-        <View className="relative right-[-250px] flex flex-row items-center gap-3">
+        <View className="relative w-full" style={{ height: windowHeight / 2 }}>
           <Image
-            source={icons.heart}
-            className="size-7"
-            tintColor={"#191D31"}
+            source={{ uri: property?.image }}
+            className="size-full"
+            resizeMode="cover"
           />
-          <Image source={icons.send} className="size-7" />
-        </View>
-      </View>
+          <Image
+            source={images.whiteGradient}
+            className="absolute top-0 w-full z-40"
+          />
 
-      {/* details */}
-      <View className="details flex flex-col py-5 px-7 gap-3 w-full my-3">
-        <Text className="font-rubik-bold text-2xl">{property?.name}</Text>
-        <View className="flex flex-row justify-start items-center mb-2">
-          <Text className="font-rubik-medium text-xs uppercase w-3/12 text-primary-300">
-            {property?.type}
-          </Text>
-          <View className="flex flex-row items-center gap-2">
-            <Image source={icons.star} />
-            <Text className="text-black-200 font-rubik">4.5 (12 Reviews) </Text>
-          </View>
-        </View>
-        <View className="flex flex-row justify-between items-center">
-          <View className="flex flex-row items-center gap-5">
-            <Image source={icons.bed} className="size-6" />
-            <Text className="font-rubik-medium">8 Bed</Text>
-          </View>
-          <View className="flex flex-row items-center gap-5">
-            <Image source={icons.bath} className="size-6" />
-            <Text className="font-rubik-medium">3 Bath</Text>
-          </View>
-          <View className="flex flex-row items-center gap-5">
-            <Image source={icons.area} className="size-6" />
-            <Text className="font-rubik-medium">2000 Sqft</Text>
-          </View>
-        </View>
-      </View>
+          <View
+            className="z-50 absolute inset-x-7"
+            style={{
+              top: Platform.OS === "ios" ? 70 : 20,
+            }}
+          >
+            <View className="flex flex-row items-center w-full justify-between">
+              <TouchableOpacity
+                onPress={() => router.back()}
+                className="flex flex-row bg-primary-200 rounded-full size-11 items-center justify-center"
+              >
+                <Image source={icons.backArrow} className="size-5" />
+              </TouchableOpacity>
 
-      {/* Agent */}
-      <View className="w-full border-t border-primary-200 p-7 mt-5">
-        <Text className="text-xl font-rubik-bold">Agent</Text>
-        <View className="flex flex-row items-center justify-between mt-3">
-          <View className="flex flex-row items-center justify-evenly">
-            <Image source={images.avatar} className="size-16" />
-            <View className="flex flex-col justify-center ml-3">
-              <Text className="text-lg font-rubik-bold">John Martin</Text>
-              <Text className="font-rubik-light">Owner</Text>
+              <View className="flex flex-row items-center gap-3">
+                <Image
+                  source={icons.heart}
+                  className="size-7"
+                  tintColor={"#191D31"}
+                />
+                <Image source={icons.send} className="size-7" />
+              </View>
             </View>
           </View>
-          <View className="flex flex-row justify-center items-center gap-3 ml-3">
-            <Image source={icons.chat} className="size-8" />
-            <Image source={icons.phone} className="size-8" />
-          </View>
         </View>
-      </View>
 
-      {/* Overview */}
-      <View className="w-full border-t border-primary-200 p-7 mt-5">
-        <Text className="text-xl font-rubik-bold">Overview</Text>
-        <Text className="text-black-200 text-lg font-rubik mt-3">
-          Sleek, modern 2-bedroom apartment with open living space, high-end
-          finishes, and city views. Minutes from downtown, dining, and transit.
-        </Text>
-      </View>
-
-      {/* Facilities */}
-      <View className="m-7">
-        <Text className="text-xl font-rubik-bold">Facilites</Text>
-        <View>
-          {property?.facilities.map((item: string, index: number) => {
-            const facilityData = facilities.find(
-              (facility) => facility.title == item
-            );
-
-            return (
-              <View key={index} className="mt-5">
-                <View className="size-14 bg-primary-100 rounded-full flex items-center justify-center">
-                  <Image
-                    source={facilityData ? facilityData.icon : icons.info}
-                    className="size-6"
-                  />
-                </View>
-                <Text>{facilityData?.title}</Text>
-              </View>
-            );
-          })}
-        </View>
-      </View>
-
-      {/* Gallery */}
-      {property?.gallery.length > 0 && (
-        <View className="m-7">
-          <Text className="text-black-300 text-xl font-rubik-bold">
-            Gallery
+        <View className="px-5 mt-7 flex gap-2">
+          <Text className="text-2xl font-rubik-extrabold">
+            {property?.name}
           </Text>
-          <FlatList
-            contentContainerStyle={{ paddingRight: 20 }}
-            data={property?.gallery}
-            keyExtractor={(item) => item.$id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image
-                source={{ uri: item.image }}
-                className="size-40 rounded-xl"
-              />
+
+          <View className="flex flex-row items-center gap-3">
+            <View className="flex flex-row items-center px-4 py-2 bg-primary-100 rounded-full">
+              <Text className="text-xs font-rubik-bold text-primary-300">
+                {property?.type}
+              </Text>
+            </View>
+
+            <View className="flex flex-row items-center gap-2">
+              <Image source={icons.star} className="size-5" />
+              <Text className="text-black-200 text-sm mt-1 font-rubik-medium">
+                {property?.rating} ({property?.reviews.length} reviews)
+              </Text>
+            </View>
+          </View>
+
+          <View className="flex flex-row items-center mt-5">
+            <View className="flex flex-row items-center justify-center bg-primary-100 rounded-full size-10">
+              <Image source={icons.bed} className="size-4" />
+            </View>
+            <Text className="text-black-300 text-sm font-rubik-medium ml-2">
+              {property?.bedrooms} Beds
+            </Text>
+            <View className="flex flex-row items-center justify-center bg-primary-100 rounded-full size-10 ml-7">
+              <Image source={icons.bath} className="size-4" />
+            </View>
+            <Text className="text-black-300 text-sm font-rubik-medium ml-2">
+              {property?.bathrooms} Baths
+            </Text>
+            <View className="flex flex-row items-center justify-center bg-primary-100 rounded-full size-10 ml-7">
+              <Image source={icons.area} className="size-4" />
+            </View>
+            <Text className="text-black-300 text-sm font-rubik-medium ml-2">
+              {property?.area} sqft
+            </Text>
+          </View>
+
+          <View className="w-full border-t border-primary-200 pt-7 mt-5">
+            <Text className="text-black-300 text-xl font-rubik-bold">
+              Agent
+            </Text>
+
+            <View className="flex flex-row items-center justify-between mt-4">
+              <View className="flex flex-row items-center">
+                <Image
+                  source={{ uri: property?.agent.avatar }}
+                  className="size-14 rounded-full"
+                />
+
+                <View className="flex flex-col items-start justify-center ml-3">
+                  <Text className="text-lg text-black-300 text-start font-rubik-bold">
+                    {property?.agent.name}
+                  </Text>
+                  <Text className="text-sm text-black-200 text-start font-rubik-medium">
+                    {property?.agent.email}
+                  </Text>
+                </View>
+              </View>
+
+              <View className="flex flex-row items-center gap-3">
+                <Image source={icons.chat} className="size-7" />
+                <Image source={icons.phone} className="size-7" />
+              </View>
+            </View>
+          </View>
+
+          <View className="mt-7">
+            <Text className="text-black-300 text-xl font-rubik-bold">
+              Overview
+            </Text>
+            <Text className="text-black-200 text-base font-rubik mt-2">
+              {property?.description}
+            </Text>
+          </View>
+
+          <View className="mt-7">
+            <Text className="text-black-300 text-xl font-rubik-bold">
+              Facilities
+            </Text>
+
+            {property?.facilities.length > 0 && (
+              <View className="flex flex-row flex-wrap items-start justify-start mt-2 gap-5">
+                {property?.facilities.map((item: string, index: number) => {
+                  const facility = facilities.find(
+                    (facility) => facility.title === item
+                  );
+
+                  return (
+                    <View
+                      key={index}
+                      className="flex flex-1 flex-col items-center min-w-16 max-w-20"
+                    >
+                      <View className="size-14 bg-primary-100 rounded-full flex items-center justify-center">
+                        <Image
+                          source={facility ? facility.icon : icons.info}
+                          className="size-6"
+                        />
+                      </View>
+
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        className="text-black-300 text-sm text-center font-rubik mt-1.5"
+                      >
+                        {item}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
             )}
-            contentContainerClassName="flex gap-4 mt-3"
-          />
-        </View>
-      )}
+          </View>
 
-      {/* Location */}
-      <View className="m-7">
-        <Text className="text-xl font-rubik-bold">Location</Text>
-        <View>
-          <View className="text-black-300 text-lg font-rubik my-3 flex flex-row items-center gap-3">
-            <Image source={icons.location} className="size-6" />
-            <Text className="font-rubik text-black-200">
-              Grand City St. 100, New York, United States
+          {property?.gallery.length > 0 && (
+            <View className="mt-7">
+              <Text className="text-black-300 text-xl font-rubik-bold">
+                Gallery
+              </Text>
+              <FlatList
+                contentContainerStyle={{ paddingRight: 20 }}
+                data={property?.gallery}
+                keyExtractor={(item) => item.$id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <Image
+                    source={{ uri: item.image }}
+                    className="size-40 rounded-xl"
+                  />
+                )}
+                contentContainerClassName="flex gap-4 mt-3"
+              />
+            </View>
+          )}
+
+          <View className="mt-7">
+            <Text className="text-black-300 text-xl font-rubik-bold">
+              Location
+            </Text>
+            <View className="flex flex-row items-center justify-start mt-4 gap-2">
+              <Image source={icons.location} className="w-7 h-7" />
+              <Text className="text-black-200 text-sm font-rubik-medium">
+                {property?.address}
+              </Text>
+            </View>
+
+            <Image
+              source={images.map}
+              className="h-52 w-full mt-5 rounded-xl"
+            />
+          </View>
+
+          {property?.reviews.length > 0 && (
+            <View className="mt-7">
+              <View className="flex flex-row items-center justify-between">
+                <View className="flex flex-row items-center">
+                  <Image source={icons.star} className="size-6" />
+                  <Text className="text-black-300 text-xl font-rubik-bold ml-2">
+                    {property?.rating} ({property?.reviews.length} reviews)
+                  </Text>
+                </View>
+
+                <TouchableOpacity>
+                  <Text className="text-primary-300 text-base font-rubik-bold">
+                    View All
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View className="mt-5">
+                <Comment item={property?.reviews[0]} />
+              </View>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+
+      <View className="absolute bg-white bottom-0 w-full rounded-t-2xl border-t border-r border-l border-primary-200 p-7">
+        <View className="flex flex-row items-center justify-between gap-10">
+          <View className="flex flex-col items-start">
+            <Text className="text-black-200 text-xs font-rubik-medium">
+              Price
+            </Text>
+            <Text
+              numberOfLines={1}
+              className="text-primary-300 text-start text-2xl font-rubik-bold"
+            >
+              ${property?.price}
             </Text>
           </View>
-          <Image
-            source={images.map}
-            className="w-full h-[200px] object-cover rounded-xl"
-          />
-        </View>
-      </View>
 
-      {/* Reviews */}
-      <View className="m-7 ">
-        {/* ratings */}
-        <View className="flex flex-row items-center justify-between">
-          <View className="flex flex-row items-center">
-            <Image source={icons.star} className="size-6" />
-            <Text className="text-xl font-rubik-bold ml-2">
-              4.5 (12 Reviews)
+          <TouchableOpacity className="flex-1 flex flex-row items-center justify-center bg-primary-300 py-3 rounded-full shadow-md shadow-zinc-400">
+            <Text className="text-white text-lg text-center font-rubik-bold">
+              Book Now
             </Text>
-          </View>
-          <TouchableOpacity>
-            <Text className="font-rubik-bold text-primary-300">See All</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Comment */}
-        <Comments />
       </View>
-
-      {/* Booking */}
-      <View className="mt-5 flex flex-row justify-between items-center p-7 rounded-3xl border border-primary-200">
-        <View className="flex flex-col gap-2">
-          <Text className="text-xs font-rubik text-black-200 uppercase">
-            Price
-          </Text>
-          <Text className="text-xl text-primary-300 font-rubik-bold">
-            $18000
-          </Text>
-        </View>
-        <TouchableOpacity>
-          <Text className="text-xl px-12 py-4 rounded-full font-rubik-bold text-white bg-primary-300">
-            Booking Now
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 

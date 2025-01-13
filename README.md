@@ -36,14 +36,14 @@ ReState is a full-stack real estate application built with React Native, featuri
 
 ### 🏡 Property Listings and Details
 <p align="center">
-  <img src="IMG-20250113-WA0005.jpg" alt="Property Listings" width="200" />
-  <img src="IMG-20250113-WA0003.jpg" alt="Property Details" width="200" />
+  <img src="./Screenshots/Home-Recom.jpg" alt="Property Listings" width="200" />
+  <img src="./Screenshots/Details-1.jpg" alt="Property Details" width="200" />
 </p>
 <p align="center">Browse property listings and view detailed information for selected properties.</p>
 
 ### 📷 Profile
 <p align="center">
-  <img src="IMG-20250113-WA0002.jpg" alt="User Profile" width="200" />
+  <img src="./Screenshots/Profile.jpg" alt="User Profile" width="200" />
 </p>
 <p align="center">Manage user profiles and view account details effortlessly.</p>
 

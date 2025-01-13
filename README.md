@@ -16,6 +16,39 @@ ReState is a full-stack real estate application built with React Native, featuri
 - **Styling:** Nativewind
 - **Backend:** Appwrite
 
+---
+
+## Screenshots
+
+### 📱 Logo and Authentication
+<p align="center">
+  <img src="./Screenshots/ReState.jpg" alt="App Logo" width="200" />
+  <img src="./Screenshots/Google-Auth.jpg" alt="Google Authentication" width="200" />
+</p>
+<p align="center">Showcasing the app's branding and seamless Google Authentication.</p>
+
+### 🏠 Home Screen and Search
+<p align="center">
+  <img src="./Screenshots/Home-Feat.jpg" alt="Featured Properties on Home Screen" width="200" />
+  <img src="./Screenshots/Explore.jpg" alt="Search Properties" width="200" />
+</p>
+<p align="center">Discover properties through the intuitive home screen and explore search functionality.</p>
+
+### 🏡 Property Listings and Details
+<p align="center">
+  <img src="IMG-20250113-WA0005.jpg" alt="Property Listings" width="200" />
+  <img src="IMG-20250113-WA0003.jpg" alt="Property Details" width="200" />
+</p>
+<p align="center">Browse property listings and view detailed information for selected properties.</p>
+
+### 📷 Profile
+<p align="center">
+  <img src="IMG-20250113-WA0002.jpg" alt="User Profile" width="200" />
+</p>
+<p align="center">Manage user profiles and view account details effortlessly.</p>
+
+---
+
 ## Installation
 
 1. Clone the repository:

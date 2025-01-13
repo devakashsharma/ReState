@@ -14,6 +14,7 @@ import images from "@/constants/images";
 import { facilities } from "@/constants/data";
 import { getPropertyById } from "@/lib/appwrite";
 import { useAppwrite } from "@/lib/useAppwrite";
+import Comments from "@/components/Comments";
 
 const Property = () => {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -174,7 +175,6 @@ const Property = () => {
 
       {/* Reviews */}
       <View className="m-7 ">
-
         {/* ratings */}
         <View className="flex flex-row items-center justify-between">
           <View className="flex flex-row items-center">
@@ -188,32 +188,8 @@ const Property = () => {
           </TouchableOpacity>
         </View>
 
-        {/* reviewer name */}
-        <View className="flex flex-row items-center mt-5 gap-3">
-          <Image source={images.avatar} className="size-16" />
-          <Text className="text-xl font-rubik-bold">John Martin</Text>
-        </View>
-
-        {/* review */}
-        <View className="mt-3">
-          <Text className="font-rubik text-black-200">
-            The apartment is very clean and modern. I really like the interior
-            design. Looks like I'll feel at home 😍.
-          </Text>
-        </View>
-
-        {/* likes */}
-        <View className="flex flex-row items-center justify-between mt-5">
-          <View className="flex flex-row items-center gap-3">
-            <Image
-              source={icons.heart}
-              className="size-7"
-              tintColor={"#0061FF"}
-            />
-            <Text className="font-rubik-bold">432</Text>
-          </View>
-          <Text className="font-rubik text-black-200">6 days ago</Text>
-        </View>
+        {/* Comment */}
+        <Comments />
       </View>
     </ScrollView>
   );

@@ -14,6 +14,7 @@ import images from "@/constants/images";
 import { settings } from "@/constants/data";
 import { useGlobalContext } from "@/lib/global-provider";
 import { logout } from "@/lib/appwrite";
+import { Link } from "expo-router";
 
 interface SettingsItemProps {
   icon: ImageSourcePropType;

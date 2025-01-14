@@ -71,34 +71,42 @@ export const settings = [
   {
     title: "My Bookings",
     icon: icons.calendar,
+    path: "/MyBookings"
   },
   {
     title: "Payments",
     icon: icons.wallet,
+    path: "/Payments"
   },
   {
     title: "Profile",
     icon: icons.person,
+    path: "/Account"
   },
   {
     title: "Notifications",
     icon: icons.bell,
+    path: "/Notifications"
   },
   {
     title: "Security",
     icon: icons.shield,
+    path: "/Security"
   },
   {
     title: "Language",
     icon: icons.language,
+    path: "/Language"
   },
   {
     title: "Help Center",
     icon: icons.info,
+    path: "/HelpCenter"
   },
   {
     title: "Invite Friends",
     icon: icons.people,
+    path: "/InviteFriends"
   },
 ];
 

@@ -71,42 +71,42 @@ export const settings = [
   {
     title: "My Bookings",
     icon: icons.calendar,
-    path: "/MyBookings"
+    path: "/screens/MyBookings",
   },
   {
     title: "Payments",
     icon: icons.wallet,
-    path: "/Payments"
+    path: "/screens/Payments",
   },
   {
     title: "Profile",
     icon: icons.person,
-    path: "/Account"
+    path: "/screens/Account",
   },
   {
     title: "Notifications",
     icon: icons.bell,
-    path: "/Notifications"
+    path: "/screens/Notifications",
   },
   {
     title: "Security",
     icon: icons.shield,
-    path: "/Security"
+    path: "/screens/Security",
   },
   {
     title: "Language",
     icon: icons.language,
-    path: "/Language"
+    path: "/screens/Language",
   },
   {
     title: "Help Center",
     icon: icons.info,
-    path: "/HelpCenter"
+    path: "/screens/HelpCenter",
   },
   {
     title: "Invite Friends",
     icon: icons.people,
-    path: "/InviteFriends"
+    path: "/screens/InviteFriends",
   },
 ];
 

@@ -72,7 +72,7 @@ const Profile = () => {
         <View className="flex-row justify-center flex mt-5">
           <View className="flex flex-col items-center relative mt-5">
             <Image
-              source={{uri: user?.avatar}}
+              source={{ uri: user?.avatar }}
               className="size-44 relative rounded-full"
             />
             <TouchableOpacity className="absolute bottom-11 right-2">
@@ -87,11 +87,19 @@ const Profile = () => {
           <SettigsItem icon={icons.wallet} title="Payments" />
         </View>
 
-        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
+        {/* <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
           {settings.slice(2).map((item, index) => (
             <SettigsItem key={index} {...item} />
           ))}
-        </View>
+        </View> */}
+
+        {settings.slice(2).map((item, index) => (
+          <View key={index} className="flex flex-col  border-primary-200">
+            <Link href={item.path as any}>
+              <SettigsItem icon={item.icon} title={item.title} />
+            </Link>
+          </View>
+        ))}
 
         <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
           <SettigsItem

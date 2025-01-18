@@ -14,7 +14,7 @@ import images from "@/constants/images";
 import { settings } from "@/constants/data";
 import { useGlobalContext } from "@/lib/global-provider";
 import { logout } from "@/lib/appwrite";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 interface SettingsItemProps {
   icon: ImageSourcePropType;
@@ -22,6 +22,7 @@ interface SettingsItemProps {
   onPress?: () => void;
   textStyle?: string;
   showArrow?: boolean;
+  path?: string;
 }
 
 const SettigsItem = ({
@@ -30,6 +31,7 @@ const SettigsItem = ({
   onPress,
   textStyle,
   showArrow = true,
+  path,
 }: SettingsItemProps) => (
   <TouchableOpacity
     onPress={onPress}
@@ -82,24 +84,85 @@ const Profile = () => {
           </View>
         </View>
 
-        <View className="flex flex-col  mt-10">
-          <SettigsItem icon={icons.calendar} title="My Bookings" />
-          <SettigsItem icon={icons.wallet} title="Payments" />
+        <View className="flex flex-col mt-10">
+          <SettigsItem
+            icon={icons.calendar}
+            title="My Bookings"
+            onPress={() => {
+              router.push("/screens/MyBookings");
+            }}
+          />
+          <SettigsItem
+            icon={icons.wallet}
+            title="Payments"
+            onPress={() => {
+              router.push("/screens/Payments");
+            }}
+          />
         </View>
 
-        {/* <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
-          {settings.slice(2).map((item, index) => (
-            <SettigsItem key={index} {...item} />
-          ))}
-        </View> */}
+        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
+          {/* {settings.slice(2).map((item, index) => (
+            <SettigsItem
+              key={index}
+              icon={item.icon}
+              title={item.title}
+              path={item.path} // Pass the path for navigation
+            />
+          ))} */}
+          
+          <SettigsItem
+            icon={icons.person}
+            title="Profile"
+            onPress={() => {
+              router.push("/screens/Account");
+            }}
+          />
+          <SettigsItem
+            icon={icons.bell}
+            title="Notification"
+            onPress={() => {
+              router.push("/screens/Notifications");
+            }}
+          />
+          <SettigsItem
+            icon={icons.shield}
+            title="Security"
+            onPress={() => {
+              router.push("/screens/Security");
+            }}
+          />
+          <SettigsItem
+            icon={icons.language}
+            title="Language"
+            onPress={() => {
+              router.push("/screens/Language");
+            }}
+          />
+          <SettigsItem
+            icon={icons.info}
+            title="Help Center"
+            onPress={() => {
+              router.push("/screens/HelpCenter");
+            }}
+          />
+          <SettigsItem
+            icon={icons.people}
+            title="Invite Friends"
+            onPress={() => {
+              router.push("/screens/InviteFriends");
+            }}
+          />
+        </View>
 
-        {settings.slice(2).map((item, index) => (
+        {/* 
+        {settings.map((item, index) => (
           <View key={index} className="flex flex-col  border-primary-200">
             <Link href={item.path as any}>
               <SettigsItem {...item} />
             </Link>
           </View>
-        ))}
+        ))} */}
 
         <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
           <SettigsItem

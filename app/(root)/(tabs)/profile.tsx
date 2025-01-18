@@ -110,7 +110,7 @@ const Profile = () => {
               path={item.path} // Pass the path for navigation
             />
           ))} */}
-          
+
           <SettigsItem
             icon={icons.person}
             title="Profile"

@@ -96,7 +96,7 @@ const Profile = () => {
         {settings.slice(2).map((item, index) => (
           <View key={index} className="flex flex-col  border-primary-200">
             <Link href={item.path as any}>
-              <SettigsItem icon={item.icon} title={item.title} />
+              <SettigsItem {...item} />
             </Link>
           </View>
         ))}
